@@ -1,4 +1,20 @@
 <?php
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+
+session_start();
+
+// Verifica se o email foi enviado para exibir notificação de 
+if (isset($_SESSION['email_enviado']) && $_SESSION['email_enviado']) {
+    echo '<script>alert("Solicitação enviada com sucesso! Aguarde nosso retorno em breve.")</script>';
+    // Limpa a variável de sessão após exibir a notificação
+    unset($_SESSION['email_enviado']);
+}
+
 if(isset($_POST['submit']))
 {
   
@@ -19,24 +35,50 @@ if(isset($_POST['submit']))
     VALUES ('$nome','$email','$telefone','$cpf_cnpj','$data_nascimento','$endereco','$cep', '$assunto', '$descricao')");
 
   // Verificação e envio do email
-  if ($result) {
-    $to = 'desenvolvimento_sutec@outlook.com'; // Insira o email específico aqui
-    $subject = 'Novo formulário submetido';
-    $message = "Um novo formulário foi submetido:\n\nNome: $nome\nEmail: $email\nTelefone: $telefone\nCPF/CNPJ: $cpf_cnpj\nData de Nascimento: $data_nascimento\nEndereço: $endereco\nCEP: $cep\nAssunto: $assunto\nDescrição:\n$descricao";
-    $headers = "From: fernandosouza_1992@hotmail.com"; // Substitua pelo endereço de email do remetente
+  if($result){
 
-    // Envio do email
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Dados inseridos no banco de dados e email enviado com sucesso!";
-    } else {
-        echo "Erro ao enviar o email.";
-    }
-} else { 
-    echo "Erro ao inserir os dados no banco de dados.";
-}
-}
-
+    $mail = new PHPMailer();
+    try {
+        // Configurações do servidor SMTP externo
+        $smtpHost = 'smtp-mail.outlook.com'; // Por exemplo, smtp.gmail.com
+        $smtpPort = 587; // Porta do servidor SMTP (587 para TLS, 465 para SSL)
+        $smtpUsername = 'teste.sutec@outlook.com'; // Seu endereço de email
+        $smtpPassword = 'Sutec123'; // Sua senha de email
+        
+        // Configuração do servidor SMTP
+        $mail->isSMTP();
+        $mail->Host = $smtpHost;
+        $mail->SMTPAuth = true;
+        $mail->Username = $smtpUsername;
+        $mail->Password = $smtpPassword;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = $smtpPort;
     
+        // Dados do email
+        $to = 'teste.sutec@outlook.com'; // Endereço de email do destinatário
+        $mail->setFrom('teste.sutec@outlook.com', $nome);
+        $mail->addAddress($to);
+        $mail->Subject = $assunto;
+        $mail->Body = $descricao;
+    
+        // Envia o email
+        $mail->send();
+        
+        //Define o email como enviado na sessão
+        $_SESSION['email_enviado'] = true;
+
+        // Redireciona para a mesma página para evitar envio de formulário duplicado
+        header('Location: formulario.php');
+        exit;
+
+    } catch (Exception $e) {
+        echo "Erro ao enviar o email: {$mail->ErrorInfo}";
+        
+        
+    }
+  }  
+}
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +99,7 @@ if(isset($_POST['submit']))
         .box{
             color: white;
             position: absolute;
-            top: 50%;
+            top: 60%;
             left: 50%;
             transform: translate(-50%,-50%);
             background-color: rgba(0, 0, 0, 0.6);
