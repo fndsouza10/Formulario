@@ -20,10 +20,10 @@ if(isset($_POST['submit']))
 
   // Verificação e envio do email
   if ($result) {
-    $to = 'fernandosouza1992@hotmail.com'; // Insira o email específico aqui
+    $to = 'desenvolvimento_sutec@outlook.com'; // Insira o email específico aqui
     $subject = 'Novo formulário submetido';
     $message = "Um novo formulário foi submetido:\n\nNome: $nome\nEmail: $email\nTelefone: $telefone\nCPF/CNPJ: $cpf_cnpj\nData de Nascimento: $data_nascimento\nEndereço: $endereco\nCEP: $cep\nAssunto: $assunto\nDescrição:\n$descricao";
-    $headers = "From: desenvolvimento_sutec@outlook.com"; // Substitua pelo endereço de email do remetente
+    $headers = "From: fernandosouza_1992@hotmail.com"; // Substitua pelo endereço de email do remetente
 
     // Envio do email
     if (mail($to, $subject, $message, $headers)) {
@@ -146,7 +146,7 @@ if(isset($_POST['submit']))
 </head>
 <body>
     <div class="box">
-        <form action="formulario.php" method="POST">
+        <form action="formulario.php" method="POST" onsubmit="return handleSubmit(event)">
             <fieldset>
                 <legend><b>Declaração do Contribuinte</b></legend>
                 <br>
@@ -194,8 +194,7 @@ if(isset($_POST['submit']))
                 </div>
                 <br><br>
                 <input type="submit" name="submit" id="submit">
-                
-            
+
             </fieldset>
         </form>
     </div>
