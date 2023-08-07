@@ -15,15 +15,18 @@ if(isset($_POST['submit']))
     $assunto = $_POST ['assunto'];
     $descricao = $_POST ['descricao'];
 
-    $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,telefone,cpf_cnpj,data_nascimento,endereco,cep,assunto,descricao) 
+    $result = mysqli_query($conexao, "INSERT INTO formulario(nome,email,telefone,cpf_cnpj,data_nascimento,endereco,cep,assunto,descricao) 
     VALUES ('$nome','$email','$telefone','$cpf_cnpj','$data_nascimento','$endereco','$cep', '$assunto', '$descricao')");
 
   // Verificação e envio do email
-  if ($result) {
-    $to = 'fernandosouza1992@hotmail.com'; // Insira o email específico aqui
-    $subject = 'Novo formulário submetido';
-    $message = "Um novo formulário foi submetido:\n\nNome: $nome\nEmail: $email\nTelefone: $telefone\nCPF/CNPJ: $cpf_cnpj\nData de Nascimento: $data_nascimento\nEndereço: $endereco\nCEP: $cep\nAssunto: $assunto\nDescrição:\n$descricao";
-    $headers = "From: desenvolvimento_sutec@outlook.com"; // Substitua pelo endereço de email do remetente
+    if ($result) {
+        $to = 'desenvolvimento_sutec@outlook.com'; // Insira o email específico aqui
+        $subject = 'Novo formulário submetido';
+        $message = "Um novo formulário foi submetido:\n\nNome: 
+        $nome\nEmail: $email\nTelefone: $telefone\nCPF/CNPJ: 
+        $cpf_cnpj\nData de Nascimento: $data_nascimento\nEndereço: $endereco\nCEP: 
+        $cep\nAssunto: $assunto\nDescrição:\n$descricao";
+        $headers = "From: anderson.fndss@gmail.com"; // Substitua pelo endereço de email do remetente
 
     // Envio do email
     if (mail($to, $subject, $message, $headers)) {

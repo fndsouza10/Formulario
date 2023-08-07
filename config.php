@@ -1,11 +1,12 @@
 <?php
 
-$dbHost = 'Localhost';
+$dbHost = 'localhost';
 $dbUsername = 'root';
 $dbPassword = '';
-$dbName = 'meu_banco';
+$dbName = 'banco_teste_formulario';
 
 $conexao = new mysqli($dbHost,$dbUsername,$dbPassword,$dbName);
+
 
 
 // Verificar conexão
