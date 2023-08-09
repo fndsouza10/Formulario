@@ -1,10 +1,10 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(to right, rgb(20, 147, 220), rgb(17, 54, 71));
-    margin: 0;
-    padding: 0;
-    background-image: url('background_gradient.png'); /* Substitua pelo caminho da sua imagem de fundo */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(teste.png); /* Substitua pelo caminho da sua imagem de fundo */
     background-size: cover; /* Ajuste conforme necessário */
+    background-attachment: fixed;
 }
 .box{
     color: white;
@@ -30,15 +30,15 @@ textarea {
     /* Outros estilos que você queira adicionar */
 }
 fieldset {
-    border: 3px solid dodgerblue;
+    border: 3px solid rgb(43, 98, 216) ;
     padding: 10px; /* Adicionado espaçamento interno para o campo de formulário */
     margin-bottom: 20px; /* Adicionado espaçamento inferior para separar os campos */
 }
 legend {
-    border: 1px solid dodgerblue;
+    border: 1px solid rgb(43, 98, 216);
     padding: 10px;
     text-align: center;
-    background-color: dodgerblue;
+    background-color: rgb(43, 98, 216);
     border-radius: 8px;
 }
 .inputBox{
@@ -82,7 +82,7 @@ legend {
     font-size: 15px;
 }
 #submit{
-    background-image: linear-gradient(to right,rgb(0, 92, 197), rgb(90, 20, 220));
+    background-color: rgb(43, 98, 216);
     width: 100%;
     border: none;
     padding: 15px;
@@ -92,5 +92,5 @@ legend {
     border-radius: 10px;
 }
 #submit:hover{
-    background-image: linear-gradient(to right,rgb(0, 80, 172), rgb(80, 19, 195));
+    background-color: #2576d1;
 }

@@ -18,7 +18,11 @@ if (isset($_SESSION['email_enviado'])) {
 if(isset($_POST['submit']))
 {
   
-    include_once('conexao_bd.php');
+    try {
+     include_once('conexao_bd.php');
+    } catch (Exception $e) {
+        echo "Erro ao conectar com o banco de dados: {$e->getMessage()}";
+    }
 
     $nome = $_POST['nome'];
     $email = $_POST['email'];
@@ -40,12 +44,12 @@ if(isset($_POST['submit']))
     } 
 
     // Validação de cpf/cnpj
-    if (!preg_match("/[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}/", $cpf_cnpj)) {
+    if (!preg_match("/(\d{3}\.\d{3}\.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2})/", $cpf_cnpj)) {
         $erros['cpf_cnpj'] = 'Digite um CPF/CNPJ válido!';
     } 
 
     // Validação de telefone
-    if (!preg_match("/\([0-9]{2}\)[0-9]{4,5}\-[0-9]{4}/", $telefone)) {
+    if (!preg_match("/\([0-9]{2}\)[0-9]{5}\-[0-9]{4}/", $telefone)) {
         $erros['telefone'] = 'Digite um telefone válido!';
     } 
 
@@ -65,10 +69,10 @@ if(isset($_POST['submit']))
     // Inicia a classe PHPMailer
     $mail = new PHPMailer();
 
-    $descricaoFinal = "Formulario do Contribuinte: " . PHP_EOL . "Nome: $nome" . PHP_EOL . "Email: $email" . PHP_EOL . 
+    $descricaoFinal = "Formulário do Contribuinte: " . PHP_EOL . "Nome: $nome" . PHP_EOL . "Email: $email" . PHP_EOL . 
     "Telefone: $telefone" . PHP_EOL . "CPF/CNPJ: $cpf_cnpj" . PHP_EOL . "Data de Nascimento: $data_nascimento "
-         . PHP_EOL . "Endereco: $endereco" . PHP_EOL . "CEP: $cep" . PHP_EOL . "Assunto: $assunto" . PHP_EOL . 
-         "Descricao: $descricao";
+         . PHP_EOL . "Endereço: $endereco" . PHP_EOL . "CEP: $cep" . PHP_EOL . "Assunto: $assunto" . PHP_EOL . 
+         "Descrição: $descricao";
 
     try {
 
@@ -124,6 +128,10 @@ if(isset($_POST['submit']))
         
 </head>
 <body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
     <div class="box">
         <form action="formulario.php" method="POST" onsubmit="return handleSubmit(event)">
             <fieldset>
@@ -135,24 +143,24 @@ if(isset($_POST['submit']))
                 </div>
                 <br><br>
                 <div class="inputBox">
-                    <label for="email" class="labelInput">Email:</label>
                     <input type="text" name="email" id="email" class="inputUser" value="<?php echo isset($email) ? $email : ''; ?>" required>
+                    <label for="email" class="labelInput">Email:</label>
                     <?php if(isset($erros['email'])): ?>
                         <div style="color:red;"><?php echo $erros['email']; ?></div>
                     <?php endif; ?>
                 </div>
                 <br><br>
                 <div class="inputBox">
+                    <input type="tel" name="telefone" id="telefone" class="inputUser"  value="<?php echo isset($telefone) ? $telefone : ''; ?>" required>
                     <label for="telefone" class="labelInput">Telefone:</label>
-                    <input type="tel" name="telefone" id="telefone" class="inputUser" value="<?php echo isset($telefone) ? $telefone : ''; ?>" required>
                     <?php if(isset($erros['telefone'])): ?>
                         <div style="color:red;"><?php echo $erros['telefone']; ?></div>
                     <?php endif; ?>
                 </div>
                 <br><br>
                 <div class="inputBox">
+                    <input type="text" name="cpf_cnpj" id="cpf_cnpj" class="inputUser"  value="<?php echo isset($cpf_cnpj) ? $cpf_cnpj : ''; ?>" required>
                     <label for="cpf_cnpj" class="labelInput">CPF/CNPJ:</label>
-                    <input type="text" name="cpf_cnpj" id="cpf_cnpj" class="inputUser" value="<?php echo isset($cpf_cnpj) ? $cpf_cnpj : ''; ?>" required>
                     <?php if(isset($erros['cpf_cnpj'])): ?>
                         <div style="color:red;"><?php echo $erros['cpf_cnpj']; ?></div>
                     <?php endif; ?>
@@ -167,8 +175,8 @@ if(isset($_POST['submit']))
                 </div>
                 <br><br>
                 <div class="inputBox">
-                    <label for="cep" class="labelInput">CEP:</label>
                     <input type="decimal" name="cep" id="cep" class="inputUser" value="<?php echo isset($cep) ? $cep : ''; ?>" required>
+                    <label for="cep" class="labelInput">CEP:</label>
                     <?php if(isset($erros['cep'])): ?>
                         <div style="color:red;"><?php echo $erros['cep']; ?></div>
                     <?php endif; ?>
@@ -185,8 +193,39 @@ if(isset($_POST['submit']))
                 </div>
                 <br><br>
                 <input type="submit" name="submit" id="submit">
-
             </fieldset>
+
+            <script>
+            $(document).ready(function(){
+
+            // Máscara para telefone
+                $('#telefone').mask('(00)00000-0000').on('focus', function() {
+                    $(this).mask('(00)00000-0000');
+                }).on('blur', function() {
+                    if ($(this).val().trim() === '') {
+                        $(this).unmask();
+                    }        
+                });
+
+            // Máscara para CPF/CNPJ
+                $('#cpf_cnpj').mask('000.000.000-00', {reverse: true}).on('focus', function() {
+                    $(this).mask('000.000.000-00', {reverse: true});
+                }).on('blur', function() {
+                    if ($(this).val().trim() === '') {
+                        $(this).unmask();
+                    }        
+                });
+
+            // Máscara para CEP
+                $('#cep').mask('00000-000').on('focus', function() {
+                    $(this).mask('00000-000');
+                }).on('blur', function() {
+                    if ($(this).val().trim() === '') {
+                        $(this).unmask();
+                    }        
+                });
+            });
+            </script>
         </form>
     </div>
 </body>
