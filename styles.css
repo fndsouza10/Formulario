@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(teste.png); /* Substitua pelo caminho da sua imagem de fundo */
+    background-size: cover; /* Ajuste conforme necessário */
+    background-attachment: fixed;
+}
+.box{
+    color: white;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 15px;
+    width: 80%; /* Ajustado para 80% de largura disponível */
+    max-width: 400px; /* Limitar a largura máxima do formulário */
+}
+/* Estilos adicionados para tornar o formulário responsivo */
+@media screen and (max-width: 600px) {
+    .box {
+        width: 90%; /* Reduzido para 90% em telas menores */
+    }
+}
+textarea {
+    width: 364px; /* Alterado para 100% para ocupar toda a largura disponível */
+    height: 102px;
+    /* Outros estilos que você queira adicionar */
+}
+fieldset {
+    border: 3px solid rgb(43, 98, 216) ;
+    padding: 10px; /* Adicionado espaçamento interno para o campo de formulário */
+    margin-bottom: 20px; /* Adicionado espaçamento inferior para separar os campos */
+}
+legend {
+    border: 1px solid rgb(43, 98, 216);
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(43, 98, 216);
+    border-radius: 8px;
+}
+.inputBox{
+    position: relative;
+}
+.inputUser{
+    background: none;
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+    color: white;
+    font-size: 15px;
+    width: 100%;
+    letter-spacing: 2px;
+}
+.labelInput{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+    transition: .5s;
+}
+.labelInputDesc {
+    position: absolute;
+    top: -20px; /* Ajustado para posicionar o label acima do input */
+    left: 0px;
+    pointer-events: none;
+    transition: .5s;
+}
+.inputUser:focus ~ .labelInput,
+.inputUser:valid ~ .labelInput{
+    top: -20px;
+    font-size: 12px;
+    color: dodgerblue;
+}
+#data_nascimento{
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+#submit{
+    background-color: rgb(43, 98, 216);
+    width: 100%;
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+#submit:hover{
+    background-color: #2576d1;
+}
