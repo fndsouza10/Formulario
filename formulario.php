@@ -68,6 +68,7 @@ if(isset($_POST['submit']))
 
     // Inicia a classe PHPMailer
     $mail = new PHPMailer();
+    $mail->CharSet = 'UTF-8';
 
     $descricaoFinal = "Formulário do Contribuinte: " . PHP_EOL . "Nome: $nome" . PHP_EOL . "Email: $email" . PHP_EOL . 
     "Telefone: $telefone" . PHP_EOL . "CPF/CNPJ: $cpf_cnpj" . PHP_EOL . "Data de Nascimento: $data_nascimento "
@@ -138,7 +139,7 @@ if(isset($_POST['submit']))
                 <legend><b>Declaração do Contribuinte</b></legend>
                 <br>
                 <div class="inputBox">
-                    <input type="text" name="nome" id="nome" class="inputUser" required>
+                    <input type="text" name="nome" id="nome" class="inputUser" value="<?php echo isset($nome) ? $nome : ''; ?>" required>
                     <label for="nome" class="labelInput">Nome completo:</label>
                 </div>
                 <br><br>
@@ -167,10 +168,10 @@ if(isset($_POST['submit']))
                 </div>
                 <p></p>
                 <label for="data_nascimento"><b>Data de Nascimento:</b></label>
-                <input type="date" name="data_nascimento" id="data_nascimento" required><br><br>
+                <input type="date" name="data_nascimento" id="data_nascimento" value="<?php echo isset($data_nascimento) ? $data_nascimento : ''; ?>" required><br><br>
 
                 <div class="inputBox">
-                    <input type="text" name="endereco" id="endereco" class="inputUser" required>
+                    <input type="text" name="endereco" id="endereco" class="inputUser" value="<?php echo isset($endereco) ? $endereco : ''; ?>" required>
                     <label for="endereco" class="labelInput">Endereço:</label>
                 </div>
                 <br><br>
@@ -183,12 +184,12 @@ if(isset($_POST['submit']))
                 </div>
                 <br><br>
                 <div class="inputBox">
-                    <input type="text" name="assunto" id="assunto" class="inputUser" required>
+                    <input type="text" name="assunto" id="assunto" class="inputUser" value="<?php echo isset($assunto) ? $assunto : ''; ?>" required>
                     <label for="assunto" class="labelInput">Assunto:</label>
                 </div>
                 <br><br><br>
                 <div class="inputBox">
-                    <textarea type="text" name="descricao" id="descricao" class="textarea" required></textarea>
+                    <textarea type="text" name="descricao" id="descricao" class="textarea" required><?php echo isset($_POST['descricao']) ? $_POST['descricao'] : ''; ?></textarea>
                     <label for="descricao" class="labelInputDesc">Descrição:</label>
                 </div>
                 <br><br>
